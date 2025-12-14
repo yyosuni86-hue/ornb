@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>開運オラクルナビ（神秘カード版）</title>
+  <style>
+:root{
+  --bg1:#070b1b;
+  --bg2:#17072a;
+  --card: rgba(16, 22, 54, .60);
+  --text:#f7f3e9;
+  --muted: rgba(247,243,233,.72);
+
+  --gold1:#fff6c7;
+  --gold2:#ffd56a;
+  --gold3:#e6b84c;
+  --gold4:#fff0b5;
+
+  --pink: rgba(255, 92, 214, .26);
+  --mint: rgba(77, 255, 210, .18);
+
+  --ring: rgba(255,216,120,.60);
+}
+
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+body{
+  margin:0;
+  color:var(--text);
+  font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN","Noto Sans JP", sans-serif;
+  background:
+    radial-gradient(1100px 700px at 15% 10%, var(--pink), transparent 60%),
+    radial-gradient(900px 650px at 85% 15%, var(--mint), transparent 55%),
+    radial-gradient(1100px 900px at 50% 120%, rgba(255, 216, 120, .12), transparent 60%),
+    linear-gradient(160deg, var(--bg1), var(--bg2));
+  overflow-x:hidden;
+}
+
+.app{ max-width: 1140px; margin:0 auto; padding: 22px 18px 40px; }
+
+.header{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:14px; padding: 10px 6px 18px;
+}
+.brand{ display:flex; align-items:center; gap:12px; }
+.logo{
+  width:44px; height:44px; border-radius: 16px;
+  display:grid; place-items:center;
+  font-weight:900; color:#2b1c00;
+  background:
+    radial-gradient(900px 180px at 20% 25%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, var(--gold1), var(--gold2), var(--gold3));
+  border: 1px solid rgba(255,216,120,.55);
+  box-shadow: 0 12px 34px rgba(0,0,0,.45), 0 0 24px rgba(255,216,120,.18);
+}
+h1{ margin:0; font-size: 18px; letter-spacing:.08em; }
+.sub{ margin:2px 0 0; font-size: 12px; color: var(--muted); letter-spacing:.06em; }
+.topActions{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
+.grid{ display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+
+.card{
+  grid-column: span 6;
+  background:
+    radial-gradient(900px 260px at 20% 10%, rgba(255,255,255,.08), transparent 60%),
+    radial-gradient(700px 240px at 80% 0%, rgba(255,216,120,.12), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)),
+    var(--card);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 22px;
+  padding: 16px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.55);
+  position:relative;
+  overflow:hidden;
+}
+.card.wide{ grid-column: span 12; }
+
+.card h2{
+  margin:0 0 12px;
+  font-size: 14px;
+  letter-spacing:.14em;
+  font-weight:900;
+  color: transparent;
+  background: linear-gradient(120deg, var(--gold1), var(--gold2), var(--gold3), var(--gold4));
+  -webkit-background-clip:text; background-clip:text;
+}
+
+.form{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+label{ display:flex; flex-direction:column; gap:6px; font-size:12px; color:var(--muted); }
+label.wide{ grid-column: span 2; }
+
+input, select{
+  height: 40px; padding: 0 12px; border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.18);
+  color: var(--text);
+  outline:none;
+}
+
+.coords{ margin-top:8px; font-size: 11px; color: var(--muted); }
+
+.row{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+
+.btn{
+  height: 42px; padding: 0 14px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.18);
+  color: var(--text);
+  font-weight: 800;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+.btn.primary{
+  color:#2b1c00;
+  border-color: rgba(255,216,120,.55);
+  background:
+    radial-gradient(900px 180px at 20% 25%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, var(--gold1), var(--gold2), var(--gold3));
+}
+.btn.ghost{ border-color: rgba(255,216,120,.35); background: rgba(255,216,120,.06); }
+
+.mini{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.pill{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  padding: 10px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.pill span{ font-size: 11px; color: var(--muted); }
+.pill b{ font-size: 16px; letter-spacing:.06em; }
+
+.big{ display:flex; gap:12px; align-items:flex-start; }
+.badge{
+  min-width: 82px; height: 82px; border-radius: 22px;
+  display:grid; place-items:center;
+  font-weight: 1000;
+  font-size: 22px;
+  color:#2b1c00;
+  background:
+    radial-gradient(900px 180px at 20% 25%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, var(--gold1), var(--gold2), var(--gold3));
+  border: 1px solid rgba(255,216,120,.55);
+}
+.meta{ color: var(--muted); font-size: 13px; line-height: 1.7; margin-top: 6px; }
+
+.dirList{ margin-top: 10px; display:grid; gap:8px; }
+.dirItem{
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.dirItem .k{ color: var(--muted); font-size: 11px; }
+.dirItem .v{ margin-top: 4px; font-weight: 900; }
+
+.help{ margin:0 0 10px; color:var(--muted); font-size: 13px; line-height: 1.6; }
+.hint{ margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+/* 気分ボタンが枠内に収まる */
+.mood-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+.chip{
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.16);
+  color: var(--text);
+  padding: 9px 10px;
+  font-size: 12px;
+  cursor:pointer;
+  text-align:center;
+  white-space: nowrap;
+}
+.chip.is-on{ border-color: rgba(255,216,120,.60); }
+.chip.negative{ background: rgba(0,0,0,.22); opacity: .92; }
+
+/* ✅ 神秘カード（文字伏せ） */
+.oracleGrid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+}
+.oracleCard{
+  border-radius: 22px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  min-height: 92px;
+  transform: translateZ(0);
+}
+.oracleCard::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(220px 120px at 20% 20%, rgba(255,216,120,.22), transparent 60%),
+    radial-gradient(260px 140px at 80% 15%, rgba(255,255,255,.10), transparent 55%),
+    radial-gradient(280px 160px at 50% 120%, rgba(255,92,214,.12), transparent 55%);
+  opacity: .9;
+  pointer-events:none;
+}
+.oracleCard::after{
+  content:"";
+  position:absolute; inset:-40%;
+  background:
+    linear-gradient(120deg, transparent 35%, rgba(255,255,255,.10) 45%, transparent 55%);
+  transform: rotate(12deg) translateX(-30%);
+  opacity: .0;
+  pointer-events:none;
+}
+.oracleCard:hover::after{
+  opacity: .9;
+  transform: rotate(12deg) translateX(30%);
+  transition: transform 900ms ease, opacity 400ms ease;
+}
+.oracleCard .back{
+  position:relative;
+  height: 92px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 14px;
+  gap: 10px;
+}
+.oracleCard .sigil{
+  width: 48px; height: 48px;
+  border-radius: 18px;
+  display:grid; place-items:center;
+  color: rgba(255,246,199,.95);
+  background:
+    radial-gradient(900px 180px at 30% 25%, rgba(255,255,255,.22), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, rgba(255,216,120,.18), rgba(77,255,210,.10), rgba(255,92,214,.10));
+  border: 1px solid rgba(255,216,120,.25);
+  box-shadow: 0 18px 48px rgba(0,0,0,.55), 0 0 24px rgba(255,216,120,.10);
+  font-weight: 900;
+  letter-spacing:.08em;
+}
+.oracleCard .myst{
+  display:flex; flex-direction:column; gap:6px;
+  flex: 1;
+}
+.oracleCard .seal{
+  width: 120px;
+  height: 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,216,120,.18), rgba(255,255,255,.08));
+  opacity: .85;
+}
+.oracleCard .hintTap{
+  font-size: 12px;
+  color: rgba(247,243,233,.70);
+  letter-spacing:.14em;
+}
+.oracleCard .stars{
+  position:absolute; inset:0;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255,255,255,.22), transparent 55%),
+    radial-gradient(1px 1px at 35% 70%, rgba(255,216,120,.22), transparent 55%),
+    radial-gradient(1px 1px at 68% 30%, rgba(255,255,255,.18), transparent 55%),
+    radial-gradient(1px 1px at 88% 62%, rgba(77,255,210,.18), transparent 55%),
+    radial-gradient(1px 1px at 52% 45%, rgba(255,92,214,.14), transparent 55%);
+  opacity: .9;
+  pointer-events:none;
+}
+.oracleCard.is-on{
+  border-color: var(--ring);
+  box-shadow: 0 0 0 1px rgba(255,216,120,.28) inset, 0 20px 50px rgba(0,0,0,.55);
+}
+.oracleCard.is-on .sigil{
+  border-color: rgba(255,216,120,.55);
+  color:#2b1c00;
+  background:
+    radial-gradient(900px 180px at 20% 25%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, var(--gold1), var(--gold2), var(--gold3));
+}
+.oracleCard.is-on .seal{
+  background: linear-gradient(90deg, rgba(255,255,255,.16), rgba(255,216,120,.30), rgba(255,255,255,.12));
+}
+.oracleCard.is-on .hintTap{
+  color: rgba(255,246,199,.95);
+}
+
+.result{
+  display:grid;
+  grid-template-columns: 260px 1fr;
+  gap: 12px;
+}
+.cardPick{
+  height: 110px;
+  border-radius: 22px;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding: 10px;
+  font-weight: 1000;
+  color:#2b1c00;
+  background:
+    radial-gradient(900px 180px at 20% 25%, rgba(255,255,255,.65), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, var(--gold1), var(--gold2), var(--gold3));
+  border: 1px solid rgba(255,216,120,.55);
+}
+.tag{
+  margin-top: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  padding: 10px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.lead{ margin:0; font-size: 16px; font-weight: 900; }
+.detail{ margin:6px 0 0; color: var(--muted); line-height: 1.7; font-size: 13px; white-space:pre-line; }
+
+.actions{
+  margin-top: 12px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.actionBox{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  padding: 12px;
+}
+.actionBox .k{ font-size: 11px; color: var(--muted); }
+.actionBox .v{ margin-top: 6px; font-weight: 900; line-height: 1.6; white-space:pre-line; }
+
+.log{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.16);
+  padding: 12px;
+  min-height: 120px;
+  display:grid;
+  gap: 10px;
+}
+.logItem{
+  padding: 10px 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.03);
+}
+.logItem .t{ font-size: 11px; color: var(--muted); }
+.logItem .m{ margin: 6px 0 0; font-size: 13px; line-height: 1.6; white-space:pre-line; }
+
+.footer{
+  margin-top: 16px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding: 6px 6px 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media (max-width: 900px){
+  .card{ grid-column: span 12; }
+  .form{ grid-template-columns: 1fr; }
+  label.wide{ grid-column: span 1; }
+  .mini{ grid-template-columns: 1fr; }
+  .result{ grid-template-columns: 1fr; }
+  .actions{ grid-template-columns: 1fr; }
+}
+@media (max-width: 520px){
+  .mood-grid{ grid-template-columns: repeat(2, 1fr); }
+}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">✦</div>
+        <div>
+          <h1>開運オラクルナビ</h1>
+          <p class="sub">入力 → 33枚から1枚 → 今日の開運アクション＆吉方位</p>
+        </div>
+      </div>
+
+      <div class="topActions">
+        <button class="btn ghost" id="btnDemo" type="button">サンプル入力</button>
+        <button class="btn primary" id="btnLocate" type="button">現在地を取得</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>入力</h2>
+
+        <div class="form">
+          <label>
+            <span>生年月日</span>
+            <input id="birth" type="date" />
+          </label>
+
+          <label>
+            <span>性別（吉方位に必要）</span>
+            <select id="gender">
+              <option value="">選択</option>
+              <option value="f">女性</option>
+              <option value="m">男性</option>
+              <option value="o">その他（簡易：女性として算出）</option>
+            </select>
+          </label>
+
+          <label class="wide">
+            <span>現在地（任意：入力 or 取得）</span>
+            <input id="place" type="text" placeholder="例：群馬県高崎市 / 自宅 など" />
+            <div class="coords" id="coords">位置情報：未取得</div>
+          </label>
+
+          <label class="wide">
+            <span>今日の気分・状態</span>
+            <div class="chips mood-grid" id="moodChips" role="group" aria-label="今日の気分・状態">
+              <button type="button" class="chip" data-mood="calm">落ち着きたい</button>
+              <button type="button" class="chip" data-mood="love">愛を感じたい</button>
+              <button type="button" class="chip" data-mood="money">金運を整えたい</button>
+              <button type="button" class="chip" data-mood="work">仕事を進めたい</button>
+              <button type="button" class="chip" data-mood="reset">リセットしたい</button>
+              <button type="button" class="chip negative" data-mood="anxious">不安を感じている</button>
+              <button type="button" class="chip negative" data-mood="tired">疲れている</button>
+            </div>
+          </label>
+        </div>
+
+        <div class="row">
+          <button class="btn" id="btnUpdate" type="button">更新</button>
+          <button class="btn ghost" id="btnClear" type="button">リセット</button>
+        </div>
+
+        <div class="mini">
+          <div class="pill"><span>数秘（ライフパス）</span><b id="lifePath">-</b></div>
+          <div class="pill"><span>本命卦（簡易）</span><b id="kua">-</b></div>
+        </div>
+
+        <p class="hint">※吉方位（本命卦）は「生年月日＋性別」で算出します。現在地は“使い方”に反映されます。</p>
+      </section>
+
+      <section class="card">
+        <h2>今日の吉方位</h2>
+
+        <div class="big">
+          <div class="badge" id="luckyDir">-</div>
+          <div class="meta" id="dirMeta">生年月日と性別を入れると算出します。</div>
+        </div>
+
+        <div class="dirList" id="dirList"></div>
+      </section>
+
+      <section class="card wide">
+        <h2>33枚オラクル（神秘カード）</h2>
+        <p class="help">カードの文字は伏せてあります。<strong>クリック</strong>か「ランダムに1枚引く」で選んでください。</p>
+
+        <div class="oracleGrid" id="oracleGrid" aria-label="オラクルカード一覧（文字非表示）"></div>
+
+        <div class="row">
+          <button class="btn primary" id="btnRandomCard" type="button">ランダムに1枚引く</button>
+          <button class="btn ghost" id="btnClearCard" type="button">カード選択を解除</button>
+        </div>
+      </section>
+
+      <section class="card wide">
+        <h2>今日の開運メッセージ</h2>
+
+        <div class="result">
+          <div class="resultLeft">
+            <div class="cardPick" id="pickedCard">未選択</div>
+            <div class="tag" id="pickedTags">—</div>
+          </div>
+
+          <div class="resultRight">
+            <p class="lead" id="lead">生年月日・性別を入れて、カードを1枚選んでください。</p>
+            <p class="detail" id="detail">気分を選ぶと、開運アクションが気分に合わせて変化します。</p>
+
+            <div class="actions">
+              <div class="actionBox">
+                <div class="k">開運アクション</div>
+                <div class="v" id="action">-</div>
+              </div>
+              <div class="actionBox">
+                <div class="k">吉方位の使い方</div>
+                <div class="v" id="howto">-</div>
+              </div>
+            </div>
+
+            <div class="row">
+              <button class="btn" id="btnCopy" type="button">コピー</button>
+              <button class="btn ghost" id="btnSave" type="button">ログに保存</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card wide">
+        <h2>ログ</h2>
+        <div class="log" id="log"></div>
+        <div class="row">
+          <button class="btn ghost" id="btnExport" type="button">ログを書き出し</button>
+          <button class="btn ghost" id="btnClearLog" type="button">ログ削除</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>✦ Oracle × 開運ナビ（神秘カード版）</span>
+      <span class="tiny">“断定”ではなく“整うための提案”。</span>
+    </footer>
+  </div>
+
+  <script>
+const $ = (s) => document.querySelector(s);
+const pad2 = (n) => String(n).padStart(2, "0");
+
+function sumDigits(n){ return String(n).split("").reduce((a,c)=>a + (c.charCodeAt(0)-48), 0); }
+function reduceTo1to9(n){ while(n > 9) n = sumDigits(n); return n; }
+function escapeHtml(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#39;");
+}
+
+function calcLifePath(dateStr){
+  const [y,m,d] = dateStr.split("-").map(Number);
+  const total = sumDigits(y) + sumDigits(m) + sumDigits(d);
+  return reduceTo1to9(total);
+}
+
+function calcKua(year, gender){
+  const s = sumDigits(year) % 9;
+  const is2000plus = year >= 2000;
+  const g = (gender === "m") ? "m" : "f"; // その他は女性扱い
+  let kua;
+  if(g === "m"){ kua = is2000plus ? (9 - s) : (10 - s); }
+  else{ kua = is2000plus ? (s + 6) : (s + 5); }
+  kua = kua % 9; if(kua === 0) kua = 9;
+  return kua;
+}
+const KUA_DIRS = {
+  1: { seiki:"東南", teni:"東",  ennen:"南",  fukui:"北" },
+  2: { seiki:"北東", teni:"西",  ennen:"北西", fukui:"南西" },
+  3: { seiki:"南",  teni:"東南", ennen:"北",  fukui:"東" },
+  4: { seiki:"北",  teni:"南",  ennen:"東",  fukui:"東南" },
+  6: { seiki:"西",  teni:"北東", ennen:"南西", fukui:"北西" },
+  7: { seiki:"北西", teni:"西",  ennen:"北東", fukui:"南西" },
+  8: { seiki:"南西", teni:"北西", ennen:"西",  fukui:"北東" },
+  9: { seiki:"東",  teni:"南",  ennen:"東南", fukui:"北" }
+};
+function kuaName(kua){
+  const names = {1:"一白",2:"二黒",3:"三碧",4:"四緑",6:"六白",7:"七赤",8:"八白",9:"九紫"};
+  return names[kua] ? `${names[kua]}（${kua}）` : `-`;
+}
+
+const MOOD_LINE = {
+  calm:"今日は“静けさ”を優先すると整います。",
+  love:"今日は“やさしい言葉”が幸運の鍵です。",
+  money:"今日は“磨く・整える”が金運の流れ。",
+  work:"今日は“短い集中”が進展を呼びます。",
+  reset:"今日は“手放し”が新しい風を呼びます。",
+  anxious:"不安は危険信号ではなく、感受性が高まっているサイン。安心できる選択を。",
+  tired:"疲れは頑張った証。回復を最優先にして、やさしい1日へ。"
+};
+
+const ORACLE33 = [
+  {name:"はじまり", tags:["新しい一歩","スタート"]},
+  {name:"浄化", tags:["手放し","整える"]},
+  {name:"直感", tags:["サイン","ピンとくる"]},
+  {name:"感謝", tags:["受け取る","循環"]},
+  {name:"境界線", tags:["守る","優しさ"]},
+  {name:"休息", tags:["回復","深呼吸"]},
+  {name:"行動", tags:["小さく動く","実行"]},
+  {name:"集中", tags:["一点突破","短時間"]},
+  {name:"許し", tags:["緩める","ほどく"]},
+  {name:"表現", tags:["伝える","言葉"]},
+  {name:"愛", tags:["あたたかさ","関係性"]},
+  {name:"豊かさ", tags:["受け取る","金運"]},
+  {name:"整頓", tags:["片付け","環境"]},
+  {name:"学び", tags:["吸収","知恵"]},
+  {name:"遊び心", tags:["軽さ","ユーモア"]},
+  {name:"信頼", tags:["委ねる","流れ"]},
+  {name:"守護", tags:["見守り","安心"]},
+  {name:"転機", tags:["切り替え","変化"]},
+  {name:"選択", tags:["決める","方向性"]},
+  {name:"調和", tags:["バランス","穏やか"]},
+  {name:"勇気", tags:["怖くても一歩","挑戦"]},
+  {name:"癒し", tags:["水","ゆるむ"]},
+  {name:"静けさ", tags:["内側","整う"]},
+  {name:"創造", tags:["生み出す","アイデア"]},
+  {name:"守り", tags:["優先順位","最小化"]},
+  {name:"循環", tags:["回す","分かち合い"]},
+  {name:"価値", tags:["自己価値","自尊"]},
+  {name:"再出発", tags:["更新","やり直せる"]},
+  {name:"ご縁", tags:["つながり","出会い"]},
+  {name:"祝福", tags:["追い風","ラッキー"]},
+  {name:"成熟", tags:["育てる","続ける"]},
+  {name:"光", tags:["希望","明るさ"]},
+  {name:"完成", tags:["仕上げ","締める"]},
+];
+
+function buildAction(cardName, mood){
+  const base = {
+    "はじまり":"今日やることを1つだけ決めて、5分だけ着手。",
+    "浄化":"不要なものを1つ捨てる／未完了を1つ終わらせる。",
+    "直感":"迷ったら最初にピンときた方を“軽く”試す。",
+    "感謝":"感謝を1通送る（短文でOK）。",
+    "境界線":"断ることを1つ決める。返信は“短く丁寧に”。",
+    "休息":"10分横になる／温かい飲み物で回復を先に。",
+    "行動":"小さく外へ。やる気より“動き出し”を優先。",
+    "集中":"タイマー15分で一点集中→終わったら即終了。",
+    "許し":"自分に『それでもOK』と声をかける。",
+    "表現":"一言で伝える（長文禁止）。",
+    "愛":"優しい言葉を1つ選ぶ。自分にも同じ言葉を。",
+    "豊かさ":"財布・口座・レシートを整える／支出を1つ止める。",
+    "整頓":"机の上だけ整える（1㎡でOK）。",
+    "学び":"今日の学びをメモ1行にする。",
+    "遊び心":"“楽しい”を5分入れる（音楽/散歩/甘いもの）。",
+    "信頼":"結果を急がず、今日できる一歩だけに集中。",
+    "守護":"不安を言語化→“今できる安全策”を1つ。",
+    "転機":"やめることを1つ決め、代わりに小さな習慣を入れる。",
+    "選択":"AかB、どちらが“軽い”かで決める。",
+    "調和":"深呼吸3回→予定を詰めすぎない。",
+    "勇気":"怖いことを“最小サイズ”にして1回だけやる。",
+    "癒し":"水に触れる（手洗い丁寧/入浴/水辺の散歩）。",
+    "静けさ":"通知OFF→5分だけ目を閉じる。",
+    "創造":"アイデアを3つ書く（評価しない）。",
+    "守り":"やることを減らす。優先順位1位だけやる。",
+    "循環":"誰かに小さな親切を渡す。",
+    "価値":"『できたこと』を3つ書く。",
+    "再出発":"やり直したいことを“今日の一歩”に分解。",
+    "ご縁":"挨拶＋近況を一言送る。",
+    "祝福":"直感で“気になる場所”へ寄り道する。",
+    "成熟":"続けたいことを1つ“明日もできる形”にする。",
+    "光":"顔を上げて歩く／部屋を明るくする。",
+    "完成":"締め切り1つを終わらせる（小さくても完了）。"
+  }[cardName] || "深呼吸して、今日の最小の一歩を選ぶ。";
+
+  if(!mood) return base;
+  if(mood === "anxious") return `（不安モード）${base}\n+ まず「安心」を作る行動を先に。`;
+  if(mood === "tired")   return `（疲れモード）${base}\n+ 回復が最優先。今日は“守り”が開運。`;
+  if(mood === "money")   return `${base}\n+ お金の流れを“整える”行動を1つ足す。`;
+  if(mood === "love")    return `${base}\n+ 優しい言葉を“短く”ひとつ添える。`;
+  if(mood === "work")    return `${base}\n+ タイマーで“短い集中”。`;
+  if(mood === "reset")   return `${base}\n+ いらない予定を1つ消す。`;
+  if(mood === "calm")    return `${base}\n+ 深呼吸3回で整えてから。`;
+  return base;
+}
+function buildHowTo(dir, place){
+  const where = place ? `（現在地：${place}）` : "（現在地：未入力）";
+  return `吉方位「${dir}」へ“少しだけ”寄せるのがコツです。\n` +
+         `・${dir}方面へ 5〜15分の散歩／寄り道\n` +
+         `・${dir}側の窓を開ける／デスクの向きを少し寄せる\n` +
+         `・${dir}側で温かい飲み物を飲む\n` +
+         `${where}\n※無理な遠出より“軽い移動”が開運。`;
+}
+
+/* DOM */
+const state = { mood:"", coords:null, selectedIndex:null };
+const el = {
+  birth: $("#birth"),
+  gender: $("#gender"),
+  place: $("#place"),
+  coords: $("#coords"),
+  moodChips: $("#moodChips"),
+
+  lifePath: $("#lifePath"),
+  kua: $("#kua"),
+
+  luckyDir: $("#luckyDir"),
+  dirMeta: $("#dirMeta"),
+  dirList: $("#dirList"),
+
+  oracleGrid: $("#oracleGrid"),
+  pickedCard: $("#pickedCard"),
+  pickedTags: $("#pickedTags"),
+
+  lead: $("#lead"),
+  detail: $("#detail"),
+  action: $("#action"),
+  howto: $("#howto"),
+
+  btnLocate: $("#btnLocate"),
+  btnUpdate: $("#btnUpdate"),
+  btnClear: $("#btnClear"),
+  btnRandomCard: $("#btnRandomCard"),
+  btnClearCard: $("#btnClearCard"),
+  btnCopy: $("#btnCopy"),
+  btnSave: $("#btnSave"),
+  btnExport: $("#btnExport"),
+  btnClearLog: $("#btnClearLog"),
+  btnDemo: $("#btnDemo"),
+
+  log: $("#log")
+};
+
+/* Log */
+const LS_KEY = "oracle_kaiun_log_v2";
+function loadLog(){
+  try{ const raw = localStorage.getItem(LS_KEY); const arr = raw ? JSON.parse(raw) : []; return Array.isArray(arr) ? arr : []; }
+  catch{ return []; }
+}
+function saveLog(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+function renderLog(){
+  const items = loadLog();
+  el.log.innerHTML = "";
+  if(items.length === 0){
+    el.log.innerHTML = `<div class="logItem"><div class="t">まだログはありません</div><div class="m">カードを選んで「ログに保存」を押すと記録されます。</div></div>`;
+    return;
+  }
+  for(const it of items.slice().reverse()){
+    const div = document.createElement("div");
+    div.className = "logItem";
+    div.innerHTML = `<div class="t">${escapeHtml(it.when)}</div><div class="m">${escapeHtml(it.text)}</div>`;
+    el.log.appendChild(div);
+  }
+}
+
+/* Basics */
+function renderBasics(){
+  const birth = el.birth.value;
+  const gender = el.gender.value;
+
+  el.lifePath.textContent = birth ? String(calcLifePath(birth)) : "-";
+
+  if(!birth || !gender){
+    el.kua.textContent = "-";
+    el.luckyDir.textContent = "-";
+    el.dirMeta.textContent = !birth ? "生年月日を入れると算出できます。" : "性別を選ぶと吉方位（本命卦）が算出されます。";
+    el.dirList.innerHTML = "";
+    return null;
+  }
+
+  const year = Number(birth.slice(0,4));
+  const kua = calcKua(year, gender);
+  const dirs = KUA_DIRS[kua];
+
+  el.kua.textContent = kuaName(kua);
+
+  if(!dirs){
+    el.luckyDir.textContent = "-";
+    el.dirMeta.textContent = "吉方位データがありません。";
+    el.dirList.innerHTML = "";
+    return {kua, dirs:null};
+  }
+
+  el.luckyDir.textContent = dirs.seiki;
+  el.dirMeta.textContent = `本命卦：${kuaName(kua)} / 最優先：生気「${dirs.seiki}」`;
+
+  el.dirList.innerHTML = `
+    <div class="dirItem"><div class="k">生気（伸びる）</div><div class="v">${dirs.seiki}</div></div>
+    <div class="dirItem"><div class="k">天医（整う）</div><div class="v">${dirs.teni}</div></div>
+    <div class="dirItem"><div class="k">延年（ご縁）</div><div class="v">${dirs.ennen}</div></div>
+    <div class="dirItem"><div class="k">伏位（安定）</div><div class="v">${dirs.fukui}</div></div>
+  `.trim();
+
+  return {kua, dirs};
+}
+
+/* Mood */
+function setMood(m){
+  state.mood = (state.mood === m) ? "" : m;
+  [...el.moodChips.querySelectorAll(".chip")].forEach(btn=>{
+    btn.classList.toggle("is-on", btn.dataset.mood === state.mood);
+  });
+
+  el.detail.textContent = state.mood
+    ? `${MOOD_LINE[state.mood]}\nカードを選ぶと、開運アクションが気分に合わせて最適化されます。`
+    : "気分は未選択です。選ぶとアクションがあなた仕様になります。";
+
+  if(state.selectedIndex !== null) applyCard(state.selectedIndex);
+}
+
+/* ✅ 文字伏せ：カードの“裏面”だけを描画（名前は結果欄で表示） */
+function renderOracleGrid(){
+  el.oracleGrid.innerHTML = "";
+  ORACLE33.forEach((c, i)=>{
+    const div = document.createElement("div");
+    div.className = "oracleCard";
+    div.dataset.i = String(i);
+    div.setAttribute("role","button");
+    div.setAttribute("tabindex","0");
+    div.setAttribute("aria-label", `オラクルカード ${i+1}（文字非表示）`);
+    div.innerHTML = `
+      <div class="stars"></div>
+      <div class="back">
+        <div class="sigil">✦</div>
+        <div class="myst">
+          <div class="seal"></div>
+          <div class="seal" style="width:72px; opacity:.65;"></div>
+          <div class="hintTap">TAP</div>
+        </div>
+      </div>
+    `;
+    div.addEventListener("click", ()=> applyCard(i));
+    div.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        applyCard(i);
+      }
+    });
+    el.oracleGrid.appendChild(div);
+  });
+}
+
+function applyCard(i){
+  state.selectedIndex = i;
+
+  [...el.oracleGrid.querySelectorAll(".oracleCard")].forEach(card=>{
+    card.classList.toggle("is-on", Number(card.dataset.i) === i);
+  });
+
+  const base = renderBasics();
+  const card = ORACLE33[i];
+
+  el.pickedCard.textContent = `選択カード：#${pad2(i+1)} ${card.name}`;
+  el.pickedTags.textContent = `キーワード：${card.tags.join(" / ")}`;
+
+  const birthOK = !!el.birth.value;
+  const genderOK = !!el.gender.value;
+  const place = el.place.value.trim();
+  const mood = state.mood;
+  const dir = (base?.dirs?.seiki) ? base.dirs.seiki : "—";
+
+  if(!birthOK || !genderOK){
+    el.lead.textContent = "生年月日と性別を入れると、吉方位込みで完成します。";
+    el.action.textContent = buildAction(card.name, mood);
+    el.howto.textContent = "生年月日＋性別を入力すると吉方位が表示されます。";
+    return;
+  }
+
+  el.lead.textContent = `今日のテーマ：「${card.name}」／吉方位：${dir}`;
+  el.detail.textContent =
+    `${MOOD_LINE[mood] ? MOOD_LINE[mood] : "今日は“軽さ”を選ぶほど、道が開けます。"}\n` +
+    `カードのキーワードを“今日の現実”に落とし込みました。`;
+
+  el.action.textContent = buildAction(card.name, mood);
+  el.howto.textContent = buildHowTo(dir, place);
+}
+
+function clearCard(){
+  state.selectedIndex = null;
+  [...el.oracleGrid.querySelectorAll(".oracleCard")].forEach(card=>card.classList.remove("is-on"));
+  el.pickedCard.textContent = "未選択";
+  el.pickedTags.textContent = "—";
+  el.lead.textContent = "生年月日・性別を入れて、カードを1枚選んでください。";
+  el.detail.textContent = "気分を選ぶと、開運アクションが気分に合わせて変化します。";
+  el.action.textContent = "-";
+  el.howto.textContent = "-";
+}
+
+function randomCard(){
+  const i = Math.floor(Math.random() * ORACLE33.length);
+  applyCard(i);
+}
+
+/* Location */
+function getLocation(){
+  if(!navigator.geolocation){
+    el.coords.textContent = "位置情報：このブラウザでは利用できません。";
+    return;
+  }
+  el.coords.textContent = "位置情報：取得中…";
+  navigator.geolocation.getCurrentPosition(
+    (pos)=>{
+      const {latitude, longitude} = pos.coords;
+      state.coords = {lat: latitude, lon: longitude};
+      el.coords.textContent = `位置情報：${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+      if(state.selectedIndex !== null) applyCard(state.selectedIndex);
+    },
+    (err)=>{ el.coords.textContent = `位置情報：取得できません（${err.message}）`; },
+    {enableHighAccuracy:false, timeout:8000, maximumAge:60000}
+  );
+}
+
+/* Copy + Log */
+function buildCopyText(){
+  const birth = el.birth.value || "未入力";
+  const gender = el.gender.value || "未選択";
+  const place = el.place.value.trim() || "未入力";
+  const mood = state.mood || "未選択";
+  const base = renderBasics();
+  const dir = base?.dirs?.seiki ? base.dirs.seiki : "未算出";
+  const card = (state.selectedIndex !== null) ? ORACLE33[state.selectedIndex] : null;
+  const cardText = card ? `#${pad2(state.selectedIndex+1)} ${card.name}` : "未選択";
+
+  return [
+    "開運オラクルナビ（神秘カード版）",
+    `生年月日：${birth}`,
+    `性別：${gender}`,
+    `現在地：${place}`,
+    `気分：${mood}`,
+    `吉方位（生気）：${dir}`,
+    `カード：${cardText}`,
+    "",
+    "【今日の開運メッセージ】",
+    el.lead.textContent,
+    "",
+    "【開運アクション】",
+    el.action.textContent,
+    "",
+    "【吉方位の使い方】",
+    el.howto.textContent
+  ].join("\n");
+}
+async function copyResult(){
+  try{ await navigator.clipboard.writeText(buildCopyText()); el.lead.textContent = "コピーしました。"; }
+  catch{ el.lead.textContent = "コピーに失敗しました（ブラウザ制限の可能性）"; }
+}
+function saveToLog(){
+  if(state.selectedIndex === null){ el.lead.textContent = "先にカードを1枚選んでください。"; return; }
+  const now = new Date();
+  const stamp = `${now.getFullYear()}-${pad2(now.getMonth()+1)}-${pad2(now.getDate())} ${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  const text = buildCopyText();
+  const items = loadLog();
+  items.push({when: stamp, text});
+  saveLog(items);
+  renderLog();
+  el.lead.textContent = "ログに保存しました。";
+}
+function exportLog(){
+  const items = loadLog();
+  const blob = new Blob([JSON.stringify(items, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "oracle_kaiun_log.json"; a.click();
+  URL.revokeObjectURL(url);
+}
+function clearLog(){ localStorage.removeItem(LS_KEY); renderLog(); }
+
+/* Demo + Reset */
+function setDemo(){
+  el.birth.value = "1992-06-18";
+  el.gender.value = "f";
+  el.place.value = "群馬県高崎市";
+  state.mood = "";
+  [...el.moodChips.querySelectorAll(".chip")].forEach(b=>b.classList.remove("is-on"));
+  renderBasics();
+  el.detail.textContent = "サンプル入力しました。カードを選ぶか、ランダムで引いてください。";
+}
+function resetAll(){
+  el.birth.value = "";
+  el.gender.value = "";
+  el.place.value = "";
+  state.mood = "";
+  state.coords = null;
+  el.coords.textContent = "位置情報：未取得";
+  [...el.moodChips.querySelectorAll(".chip")].forEach(b=>b.classList.remove("is-on"));
+  renderBasics();
+  clearCard();
+}
+
+/* Events */
+function bindEvents(){
+  el.moodChips.addEventListener("click", (e)=>{
+    const btn = e.target.closest(".chip");
+    if(!btn) return;
+    setMood(btn.dataset.mood);
+  });
+
+  el.btnLocate.addEventListener("click", getLocation);
+  el.btnUpdate.addEventListener("click", ()=>{ renderBasics(); if(state.selectedIndex !== null) applyCard(state.selectedIndex); });
+  el.btnClear.addEventListener("click", resetAll);
+
+  el.btnRandomCard.addEventListener("click", randomCard);
+  el.btnClearCard.addEventListener("click", clearCard);
+
+  el.btnCopy.addEventListener("click", copyResult);
+  el.btnSave.addEventListener("click", saveToLog);
+  el.btnExport.addEventListener("click", exportLog);
+  el.btnClearLog.addEventListener("click", clearLog);
+  el.btnDemo.addEventListener("click", setDemo);
+
+  el.birth.addEventListener("change", ()=>{ renderBasics(); if(state.selectedIndex !== null) applyCard(state.selectedIndex); });
+  el.gender.addEventListener("change", ()=>{ renderBasics(); if(state.selectedIndex !== null) applyCard(state.selectedIndex); });
+  el.place.addEventListener("input", ()=>{ if(state.selectedIndex !== null) applyCard(state.selectedIndex); });
+}
+
+/* init */
+renderOracleGrid();
+bindEvents();
+renderBasics();
+renderLog();
+  </script>
+</body>
+</html>
